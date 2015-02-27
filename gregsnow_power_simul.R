@@ -16,7 +16,7 @@ sim1 <- function(J, K, b0= 0, bRWA=0, bGroup1=0, bGroup2=0, bGxR1=0,bGxR2=0,Vsub
     
     # random effects per subject
     b0 <- rnorm(J, b0, sqrt(Vsubj))#random effect for the intercept
-    b0 <-rep(S.re,1,each=K)#repeat K (observations) times
+    b0 <-rep(b0,1,each=K)#repeat K (observations) times
 
     # random effects of the slopes I keep it the same for now, 
     #for future random slopes models it will be tailored on the slope
