@@ -15,8 +15,12 @@ sim1 <- function(J, K, b0= 0, bRWA=0, bGroup1=0, bGroup2=0, bGxR1=0,bGxR2=0,Vsub
     Group <- rep(c('T','G','I'), each=1,J*K/3)#idem for groups
     
     # random effects per subject
-    S.re <- rnorm(J, b0, sqrt(Vsubj))#random effect for the intercept
-    S.re<-rep(S.re,1,each=K)#repeat K (observations) times
+    b0 <- rnorm(J, b0, sqrt(Vsubj))#random effect for the intercept
+    b0 <-rep(S.re,1,each=K)#repeat K (observations) times
+
+    # random effects of the slopes I keep it the same for now, 
+    #for future random slopes models it will be tailored on the slope
+   
     
     # epsilons -- if we use rbinom later, this is not useful anymore
     #eps <- rnorm(J*K, 0, sqrt(Verror))#residual error
@@ -24,7 +28,7 @@ sim1 <- function(J, K, b0= 0, bRWA=0, bGroup1=0, bGroup2=0, bGxR1=0,bGxR2=0,Vsub
     
     # put it all together
     pTrust <- 1 / ( 1 + exp(-(b0 + bRWA*RWA+bGroup1*(Group=='I') + #builds probaility of trusting, given the coefficients plus random intercept plus residual error 
-    bGroup2*(Group=='G') +bGxR1*(Group=='I')*RWA+bGxR2*(Group=='G')*RWA+S.re)))# + eps)))
+    bGroup2*(Group=='G') +bGxR1*(Group=='I')*RWA+bGxR2*(Group=='G')*RWA)))# +S.re+ eps)))
     Trust<-rbinom(J*K,1,pTrust)#build a binomial random distribution for J*K trials based on the probability given the intercepts, the random error and the residual
     # put into a data frame
     mydata <- data.frame( ID = ID, 
