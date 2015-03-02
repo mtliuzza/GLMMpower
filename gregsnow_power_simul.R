@@ -48,7 +48,7 @@ sim1 <- function(J, K, b0= 0, bRWA=0, bGroup1=0, bGroup2=0, bGxR1=0,bGxR2=0,Vsub
 
 #try with .4 as exp(.4)=1.5 odd ratio, that is a small effect,i.e. an increase of 10%
 
-nsims=100
+nsims=1000
 pb <- txtProgressBar(max=nsims,style=3) # or tkProgressBar or txtProgressbar
 
 setTxtProgressBar(pb, 0)
