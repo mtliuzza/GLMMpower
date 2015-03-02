@@ -8,9 +8,14 @@ library(lme4)
 sim1 <- function(J, K, b0= 0, bRWA=0, bGroup1=0, bGroup2=0, bGxR1=0,bGxR2=0,Vsubj=1, Verror=1) {
     Subject <- rep( 1:J)#define subjects
     ID <-as.factor(Subject)#define ID as factor
-    
+    #verror 1/44 0.02272727 (ovvero .15 sd)
+    #serror 2/44 0.04545455 (0.2132007 sd)
     RWA<-rnorm(J)#create J (N clusters/participants) normally distributed RWAs
     RWA<-rep(RWA,1,each=K)#repeat K (observations) times
+    
+    #adatto varianza a n soggetti
+    Vsubj=Vsubj*J# var=np(1-p)
+    Verror=Verror*J
     
     Group <- rep(c('T','G','I'), each=1,J*K/3)#idem for groups
     
@@ -48,7 +53,7 @@ pb <- txtProgressBar(max=nsims,style=3) # or tkProgressBar or txtProgressbar
 
 setTxtProgressBar(pb, 0)
 out1 <- replicate( nsims, {setTxtProgressBar(pb, getTxtProgressBar(pb)+1);
-                         sim1(40, 180, b0= 0, bRWA=0, bGroup1=-0, bGroup2=0, bGxR1=0,bGxR2=.4,Vsubj=1, Verror=9)})
+                         sim1(40, 180, b0= 0, bRWA=0, bGroup1=-0, bGroup2=0, bGxR1=0,bGxR2=.4,Vsubj=0.02777778, Verror=.25)})
 hist(out1)#verror 5.7 because ICC=1/(1+9)=.1, which is similar to the "medium" ICC in Gelman...I made it likely for binary data,where var can be no more than .25
 mean( out1 < 0.05 )
 
